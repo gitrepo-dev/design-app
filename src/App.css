@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  background-color: #f0f0f0;
+font-family: 'Roboto', sans-serif;
+}
+.title{
+  font-family: 'Dancing Script', cursive;
+}
+
+.bg-overlay {
+  background-color: rgb(0, 0, 0, 23%);
+}
+
+.profileHeader {
+  position: relative;
+}
+
+.profileHeader::before {
+  content: "";
+  position: absolute;
+  height: 50%;
+  background-color: #a8a8a8;
+  width: 100%;
+  top: 0;
+  z-index: -1;
+}
+
+
+.loginuserimg{
+  top: -25%;
+  left: 0;
+  right: 0;
+}
+
+.shadow-sm{
+  box-shadow: 1px 2px 25px -2px #bebebe;
+}
+
+.w-100{
+  width: 350px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+.font-500{font-weight: 500;}
+
+.input-select {
+  color: #a5a5a5;
+  }
+
+ .input-select option {
+  color: black;
+  }
+  .caption-wrapper{
+    position: absolute;
+    height: 70%;
+    width: 43%;
+    top: 15%;
+    margin-right: 5px;
+    word-break: break-word;
+    overflow: hidden;
+  }
+  .cart-badge{
+    background: red;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: white;
+    position: absolute;
+    right: -13px;
+    top: -8px;
+  }
