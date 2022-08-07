@@ -21,7 +21,7 @@ export const getCartDataService = async (): Promise<object> => {
 /**
  * add to cart
  * @param {'object'}
- * @returns {'{message, success}'}
+ * @returns {'promise'}
  */
 
 export const addToCartService = async (data: cartData): Promise<object> => {
@@ -29,6 +29,25 @@ export const addToCartService = async (data: cartData): Promise<object> => {
         const res = await fetch(`${process.env.REACT_APP_USER_API}/cart/add`, {
             method: 'POST',
             body: JSON.stringify({ ...data }),
+        });
+        return await res.json()
+    } catch (e) {
+        throw e
+    }
+
+};
+
+
+/**
+ * remove item from cart
+ * @param {'uuid'}
+ * @returns {'promise'}
+ */
+
+ export const removeItemFromCartService = async (uuid: string): Promise<object> => {
+    try {
+        const res = await fetch(`${process.env.REACT_APP_USER_API}/cart/remove/${uuid}`, {
+            method: 'DELETE',
         });
         return await res.json()
     } catch (e) {

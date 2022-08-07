@@ -1,5 +1,5 @@
-
-export type cartData = {
+// @ product typescripts
+export type productData = {
     uuid: string;
     color: string,
     caption_color: string,
@@ -10,16 +10,16 @@ export type cartData = {
     price: number
 };
 
-export interface cartStateType {
+export interface productStateType {
     defaultStates: {
         isLoading: boolean;
         message: string;
         success: boolean;
     },
-    data: cartData[] | cartData
+    data: productData[] | productData
 };
 
-export interface cartActionType {
+export interface productActionType {
     type: string;
-    payload: cartData
+    payload: productData;
 };
