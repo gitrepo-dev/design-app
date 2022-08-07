@@ -1,38 +1,18 @@
-import React, { useEffect } from "react";
-import { cartProps } from "./cart.types";
-import { useDispatch, useSelector } from 'react-redux'
-import { getCartData } from "redux/reducers/cartReducer";
-import { onGetCartData, onRemoveItemToCart } from "redux/actions/cartActions";
-import { CartIconMd, Halign, Hcenter, ProductCollar, ProductOuterr, ProductShadow, Valign, Vcenter } from 'assets'
-import { cartData } from 'interfaces';
+import { Halign, Hcenter, ProductCollar, ProductOuterr, ProductShadow, Valign, Vcenter } from "assets";
 import { Link } from "react-router-dom";
-import { onCheckout } from "redux/actions/productActions";
+import { productData } from 'interfaces'
 
-const Cart: React.FC<cartProps> = ({ foo }) => {
 
-  // initializing
-  const { defaultStates: { isLoading, message }, data: { data: cartData } } = useSelector(getCartData)
-  const dispatch = useDispatch()
-
-  // dispatching action to getting cart products
-  useEffect(() => {
-    dispatch(onGetCartData())
-  }, [])
-  let totalAmt = 0
-
-  const handleCheckout = () => {
-    dispatch(onCheckout(cartData))
-  }
-
+const PurchasedOrder = ({ productData, defaultStates: { isLoading, message } }: any) => {
   return (
     <>
       {isLoading && <div className='loader-wapper'><div className="lds-facebook"><div></div><div></div><div></div></div></div>}
       <div className="container mx-auto px-5 my-5 md:my-10">
-        <Link to="/"> Home</Link> {'>'} cart
+        <Link to="/"> Home</Link> {'>'} <Link to="/cart"> Cart {'>'}</Link> History
         <div className="grid gap-4 md:grid-5 md:grid-cols-4">
           <div className="md:col-span-3">
             <div className="grid gap-4 grid-cols-2 p-4 md:p-8 my-4 lg:my-8 bg-white rounded-md">
-              {cartData?.map(({ uuid, caption, caption_color, caption_position_x, caption_position_y, price, color, size }: cartData) => (
+              {productData?.map(({ uuid, caption, caption_color, caption_position_x, caption_position_y, price, color, size }: productData) => (
                 <div className="md:col-span-3" key={uuid}>
                   <div className="grid gap-4 grid-cols-2 p-4 md:p-8 my-4 lg:my-8 bg-white rounded-md">
                     <div className="flex h-72 items-center justify-center">
@@ -68,47 +48,16 @@ const Cart: React.FC<cartProps> = ({ foo }) => {
                         <li className="grid sm:grid-cols-3 md:grid-cols-5"><span className="font-bold">Price: </span>
                           <span className="sm:col-span-2 md:col-span-4 text-gray-700">${price}</span></li>
                       </ul>
-                      <button type="button" onClick={() => dispatch(onRemoveItemToCart(uuid))} className={`mt- md:mt-5 bg-red-500 hover:bg-red-700 rounded-md py-2 flex items-center justify-center text-white px-5`}>
-                        Remove
-                      </button>
                     </div>
                   </div>
                 </div>
               ))}
-              {cartData?.length === 0 && message}
+              {productData?.length === 0 && message}
             </div>
           </div>
           <div className="md:mt-8 bg-white p-5">
-            <ul className="capitalize">
-              <li className="grid sm:grid-cols-2 mb-3">
-                <span className="font-bold">Items: </span>
-                <span className="text-gray-700">{cartData?.length ? cartData?.length : 0}</span>
-              </li>
-              <li className="grid sm:grid-cols-2 mb-3">
-                <span className="font-bold">Sub Total: </span>
-                <span className="text-gray-700">${
-                  cartData?.length && cartData?.map((data: any) => {
-                    totalAmt += data.price
-                  })} {totalAmt !== 0 && totalAmt}</span>
-              </li>
-              <li className="grid sm:grid-cols-2 py-3 border-gray-400 border-b-2">
-                <span className="font-bold">Custome Details: </span>
-              </li>
-              <li className="grid sm:grid-cols-2 my-3">
-                <span className="">Name: </span>
-                <span className="text-gray-700 text-sm">Jay sean</span>
-              </li>
-              <li className="grid sm:grid-cols-2 my-3">
-                <span className="">Contact: </span>
-                <span className="text-gray-700 text-sm">+1 9856965874</span>
-              </li>
-              <li className="grid sm:grid-cols-2 my-3">
-                <span className="">Address: </span>
-                <span className="text-gray-700 text-sm">11 street new your city USA 202154</span>
-              </li>
-            </ul>
-            <button type="button" onClick={handleCheckout} className={`bg-blue-500 hover:bg-blue-700 rounded-md py-2 flex items-center justify-center text-white w-full`}>
-              Checkout
+            <button type="submit" className={`bg-red-500 hover:bg-red-700 rounded-md py-2 flex items-center justify-center text-white w-full`}>
+              Clear History
             </button>
           </div>
         </div>
@@ -117,4 +66,4 @@ const Cart: React.FC<cartProps> = ({ foo }) => {
   );
 }
 
-export default Cart;
+export default PurchasedOrder;

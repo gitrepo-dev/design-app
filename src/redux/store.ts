@@ -4,16 +4,16 @@ import { all } from 'redux-saga/effects';
 // reducers
 import userReducer from 'redux/reducers/userReducer';
 import cartReducer from 'redux/reducers/cartReducer';
-import productCustomizePropsReducer from 'redux/reducers/productCustomizePropsReducer';
+import productCustomizePropsReducer from 'redux/reducers/productReducer';
 // sagas
 import userSaga from 'redux/sagas/userSaga';
 import cartSaga from 'redux/sagas/cartSaga';
-import productCustomizePropsSaga from 'redux/sagas/productCustomizePropsSaga';
+import productSaga from 'redux/sagas/productSaga';
 // reducers
 const reducers = combineReducers({
     user: userReducer,
     cart: cartReducer,
-    customizeProps: productCustomizePropsReducer
+    product: productCustomizePropsReducer
 });
 
 //Add Sagas
@@ -21,7 +21,7 @@ function* rootSaga() {
     yield all([
         ...userSaga,
         ...cartSaga,
-        ...productCustomizePropsSaga
+        ...productSaga
     ]);
 }
 
