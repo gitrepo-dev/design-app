@@ -1,4 +1,4 @@
-import { userInterface, userInfos } from './user';
+import { userStateType, userAction } from './user';
 import { defaultStates } from './commanTypes'
 import {
   cartData,
@@ -14,8 +14,8 @@ export type {
   // comman types
   defaultStates,
   // user types
-  userInterface,
-  userInfos,
+  userStateType, 
+  userAction,
   // product types
   productData,
   productStateType,

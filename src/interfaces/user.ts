@@ -1,14 +1,22 @@
-export type userInfos = {
-    id: string | number;
-    name: string,
-    email: string
+export type users = {
+    uuid?: string;
+    name?: string,
+    email: string,
+    password: string
 }
 
-export interface userInterface {
-    data: userInfos[]
-}
+
+export interface userStateType {
+    defaultStates: {
+        isLoading: boolean;
+        message: string;
+        success: boolean;
+    },
+    data: users | {}
+};
+
 
 export interface userAction {
     type: string;
-    payload: userInfos[];
+    payload: users;
 }

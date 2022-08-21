@@ -1,24 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { userInterface } from 'interfaces';
-import { userAction } from 'interfaces/user';
+import { userAction, userStateType } from 'interfaces';
 
-const initialState: userInterface = {
-    data: []
+const initialState: userStateType = {
+    defaultStates: {
+        isLoading: false,
+        message: '',
+        success: false
+    },
+    data: {}
 };
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUser: (state, action: userAction) => {
-            state.data = action.payload;
+        setUserStates: (state, action: any) => {
+            state.defaultStates = action.payload
         },
-        gotAllusers: (state, action: userAction) => {
+        setUserData: (state, action: userAction) => {
             state.data = action.payload;
-        },
-    },
+            localStorage.setItem('user_agent', JSON.stringify(action.payload))
+        }
+    }
 });
 
-export const { setUser } = userSlice.actions;
-export const gotAllusers = (state: any) => state.user.data;
+export const { setUserData, setUserStates } = userSlice.actions;
+export const getUserData = (state: any) => state.user;
 export default userSlice.reducer;
