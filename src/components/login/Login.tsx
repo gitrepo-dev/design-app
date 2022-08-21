@@ -12,7 +12,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate()
   const userCredentials = useSelector(getUserData)
   const dispatch = useDispatch()
-  const [inputState, setInputState] = useState({
+  const [inputState] = useState({
     login_email: '',
     login_password: ''
   })
@@ -22,15 +22,15 @@ const Login: React.FC = () => {
     if (userCredentials?.data?.auth) navigate('/home')
   }, [navigate, userCredentials?.data?.auth])
 
-  const { handleChange, errors, isValidForm } = useForm(inputState, setInputState)
+  const { handleChange, errors, isValidForm, initialState, isEdit } = useForm(inputState)
 
   // submit form
   const handleLogin = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     if (isValidForm()) {
       dispatch(onLoginUser({
-        email: inputState.login_email,
-        password: inputState.login_password
+        email: initialState.login_email,
+        password: initialState.login_password
       }))
     }
   }
@@ -53,7 +53,7 @@ const Login: React.FC = () => {
             <input type="password" name="login_password" placeholder="Password*" onChange={handleChange} className="w-full focus:outline-0 px-4 py-2 rounded border-slate-200 border-2" />
             <span className="text-red-700 h-0.5 block text-xs">{errors.login_password}</span>
             <br></br>
-            <button type="submit" className="px-8 py-2 text-center text-white bg-indigo-500 rounded hover:bg-indigo-800 w-full duration-100">Sign in</button>
+            <button type="submit" className={`${isEdit ? 'bg-indigo-500 hover:bg-indigo-800' : 'bg-gray-500 cursor-no-drop'} 'px-8 py-2 text-center text-white  rounded  w-full duration-100`}>Sign in</button>
             <p className="text-sm mt-5 text-center">Create an account <Link to="/signup" className="text-blue-700">Sign up</Link></p>
           </form>
         </div>

@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { emailRegx, passwordRegx, numberRegx } from 'utils/regexs'
 
-export default function useForm(state: any, setState: (params: any) => void) {
+export default function useForm(state: any, setState?: (params: any) => void) {
 
   //values
-  const [values, setValues] = useState({ ...state });
+  const [initialState, setInitialState] = useState({ ...state });
 
   //Errors
   const [errors, setErrors] = useState({ ...state });
@@ -12,8 +12,15 @@ export default function useForm(state: any, setState: (params: any) => void) {
   //set errors on handlechange when this state true
   const [inputChangeErrors, setInputChangeErrors] = useState(false);
 
-  //set errors on handlechange when this state true
-  const [isValidEnable, setIsValidEnable] = useState(false);
+  // set errors on handlechange when this state true
+  const [isEdit, setIsisEdit] = useState(false);
+
+
+  useEffect(() => {
+    const isValue = Object.values(initialState).some((v: any) => v === '')
+    if (isValue) setIsisEdit(false)
+    else setIsisEdit(true)
+  }, [initialState])
 
   // validate all inputs fields
   const validation = (name: string, value: any) => {
@@ -77,39 +84,36 @@ export default function useForm(state: any, setState: (params: any) => void) {
     event.persist();
     const { name, value } = event.target
     // this "inputChangeErrors" will be true if got errors previously after that execute on each key pess in inputs
-    // preview code
-    // if (inputChangeErrors) validation(name, value)
-    validation(name, value)
-    setValues({ ...values, [name]: value })
-    setState({ ...values, [name]: value })
+    if (inputChangeErrors) validation(name, value)
+    setInitialState({ ...initialState, [name]: value })
   }
 
   // this fn will execute when submit form
   const isValidForm = (): any => {
     // send input key and value one by one to check validation
     for (const key in state) {
-      validation(key, values[key]);
+      validation(key, initialState[key]);
     }
     // check if each object key has same value ("") and return true/false
     const isError = Object.values(errors).some((err: any) => err !== '')
-    const isValue = Object.values(values).some((v: any) => v === '')
-
-    if (isValue || isError) {
-      setInputChangeErrors(true);
-      setIsValidEnable(false);
+    const isValue = Object.values(initialState).some((v: any) => v === '')
+    if (isError || isValue) {
+      setInputChangeErrors(true)
       return false
     }
     else {
-      setIsValidEnable(true)
+      setInputChangeErrors(false)
+      setIsisEdit(false)
       return true
     }
+
   }
 
   return {
-    values,
+    initialState,
     errors,
     handleChange,
     isValidForm,
-    isValidEnable
+    isEdit
   }
 }
