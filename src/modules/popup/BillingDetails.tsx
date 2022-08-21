@@ -14,14 +14,14 @@ export default function BillingDetails({
 
   // init
   const dispatch = useDispatch()
-  const [inputState, setInputState] = useState({
+  const [inputState] = useState({
     card_number: '',
     cvc: '',
     phone: '',
     address: ''
   })
 
-  const { handleChange, errors, isValidForm } = useForm(inputState, setInputState)
+  const { handleChange, errors, isValidForm, initialState, isEdit } = useForm(inputState)
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault()
@@ -29,7 +29,7 @@ export default function BillingDetails({
       dispatch(userBillingDetails({
         // @ts-ignore
         email: JSON.parse(localStorage.getItem('user_agent')).email,
-        billingDetails: inputState
+        billingDetails: initialState
       }))
       setshowPopUp(false)
     }
@@ -57,7 +57,7 @@ export default function BillingDetails({
           <input type="text" name="cvc" placeholder="CVC*" onChange={handleChange} className="w-full focus:outline-0 px-4 py-2 rounded border-slate-200 border-2" />
           <span className="text-red-700 h-0.5 block text-xs">{errors.cvc}</span>
           <br></br>
-          <button type="submit" className="px-8 py-2 text-center text-white bg-indigo-500 rounded hover:bg-indigo-800 w-full duration-100">Save</button>
+          <button type="submit" className={`${isEdit ? 'bg-indigo-500 hover:bg-indigo-800' : 'bg-gray-500 cursor-no-drop'} 'px-8 py-2 text-center text-white  rounded  w-full duration-100`}>Save</button>
         </form>
       </div>
     </div>
