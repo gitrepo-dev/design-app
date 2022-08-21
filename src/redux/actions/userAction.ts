@@ -1,63 +1,57 @@
+import { users } from 'interfaces/user';
 import Types from 'redux/types/userType'
 
 /***
- * loading
- * @param {'boolean'}
- * @return {'false'}
+ * user registration
+ * @param {'uuid, email, name, password'}
+ * @return {''}
  * 
 ***/
-export const onUserLoading = (data: string, status: boolean) => ({
-    type: Types.USER_LOADING,
-    payload: {
-        data,
-        status,
-    }
+export const onUserRegistration = (data: users) => ({
+    type: Types.USER_REGISTRATION,
+    payload: data
 });
 
 
 /***
- * get the all users
+ * login user
+ * @param {'email, password'}
+ * @return {''}
+ * 
+***/
+export const onLoginUser = (data: users) => ({
+    type: Types.USER_LOGIN,
+    payload: data
+});
+
+
+/***
+ * get user credentials
  * @param {''}
- * @return {'data'}
+ * @return {''}
  * 
 ***/
-export const onGetAllUsers = () => ({
-    type: Types.GET_ALL_USERS,
-    payload: []
+export const onGetUserCredentials = () => ({
+    type: Types.GET_USER_CREDENTIALS,
+    payload: {}
 });
 
 
 /***
- * get spacific user by id
- * @param {'id'}
- * @return {'data'}
+ * billing details
+ * @param {'email'}
+ * @return {''}
  * 
 ***/
-export const onGetUser = (id: string) => ({
-    type: Types.GET_USER,
-    payload: []
-});
-
-
-/***
- * update spacific user by id
- * @param {'id'}
- * @return {'data'}
- * 
-***/
-export const onUpdateUser = (id: string) => ({
-    type: Types.GET_ALL_USERS,
-    payload: []
-});
-
-
-/***
- * delete spacific user by id
- * @param {'id'}
- * @return {'data'}
- * 
-***/
-export const onDeleteUser = (id: string) => ({
-    type: Types.GET_ALL_USERS,
-    payload: []
+export const userBillingDetails = (data: {
+    email: string,
+    billingDetails: {
+        card_number: string,
+        cvc: string,
+        phone: string,
+        address: string
+    }
+}) => ({
+    type: Types.BILLING_DETAILS,
+    payload: data
 });

@@ -19,5 +19,6 @@ import Vcenter from 'assets/icons/center-h.png';
 import Halign from 'assets/icons/arrow-left.png';
 import Hcenter from 'assets/icons/align-center.png';
 import CartIconMd from 'assets/icons/shopping-cart.png'
+import CloseIcon from 'assets/icons/cancel.png'
 
-export { Like, Cmt, Logo, SearchIcon, Fb, Twt, Insta, BackArrow, LoginUser, LogOut, ProductCollar, ProductOuterr, ProductShadow, ColorPiker, PrinterIcon, CartIcon, Valign, Vcenter, Halign, Hcenter, CartIconMd}
+export { Like, Cmt, Logo, SearchIcon, Fb, Twt, Insta, BackArrow, LoginUser, LogOut, ProductCollar, ProductOuterr, ProductShadow, ColorPiker, PrinterIcon, CartIcon, Valign, Vcenter, Halign, Hcenter, CartIconMd, CloseIcon}

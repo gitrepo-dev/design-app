@@ -1,90 +1,148 @@
 // libs
+import { userAction } from 'interfaces';
+import toast from 'modules/toast';
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { setUserStates, setUserData } from 'redux/reducers/userReducer';
 import Types from 'redux/types/userType'
-// actions
-import {
-    onUserLoading,
-    // onGetAllUsers,
-    // onGetUser,
-    // onDeleteUser,
-    // onUpdateUser
-} from '../actions/userAction'
 // services
 import {
-    getAllusers,
-    getUser,
-    updateUser,
-    deleteUser
-} from '../../services/userServices'
-// import { userAction } from '../types/user';
-import { setUser } from 'redux/reducers/userReducer';
+    loginUserServices,
+    registrationUserServices,
+    billingDetailsServices
+} from 'services/userServices'
 
 
 
-// fetching all users
-function* fetchingAllUsers(): SagaIterator {
+// login users
+function* loggingUser(action: userAction): SagaIterator {
+    const { payload } = action;
     try {
-        yield put(onUserLoading('loading....', true));
-        const data = yield call(getAllusers);
-        yield put(setUser(data));
-        yield put(onUserLoading('loading....', false));
+        yield put(setUserStates({
+            isLoading: true,
+            message: '',
+            success: false
+        }));
+        const data = yield call(loginUserServices, payload);
+        if (data.success) {
+            yield put(setUserData(data?.data?.user_agent));
+            toast.success(data.message)
+        } else toast.error(data.message)
+
+        yield put(setUserStates({
+            isLoading: false,
+            message: data.message,
+            success: data.success
+        }));
     } catch (e) {
+        toast.error('Network error')
         console.warn(e);
-        yield put(onUserLoading('loading....', false));
+        yield put(setUserStates({
+            isLoading: false,
+            message: `client side error ${e}`,
+            success: false
+        }));
     }
 }
 
-
-// fetch spacific users
-function* fetchingUser(action: any): SagaIterator {
+// registration users
+function* registrationUser(action: userAction): SagaIterator {
     const { payload } = action;
     try {
-        yield put(onUserLoading('loading....', true));
-        const res = yield call(getUser, payload.id);
-        yield put(onUserLoading('loading....', false));
-        console.log(res)
+        yield put(setUserStates({
+            isLoading: true,
+            message: '',
+            success: false
+        }));
+        const data = yield call(registrationUserServices, payload);
+        if (data.success) {
+            yield put(setUserData(data?.data?.user_agent));
+            toast.success(data?.message)
+        } else toast.info(data?.message)
+        yield put(setUserStates({
+            isLoading: false,
+            message: data.message,
+            success: data.success
+        }));
     } catch (e) {
+        toast.error('Network error')
         console.warn(e);
-        yield put(onUserLoading('loading....', false));
+        yield put(setUserStates({
+            isLoading: false,
+            message: `client side error ${e}`,
+            success: false
+        }));
     }
 }
 
-
-// deletong users
-function* deletingUser(action: any): SagaIterator {
-    const { payload } = action;
+// fetching user credentials
+function* gettingUserCredentials(): SagaIterator {
     try {
-        yield put(onUserLoading('loading....', true));
-        const res = yield call(deleteUser, payload.id);
-        yield put(onUserLoading('loading....', false));
-        console.log(res)
+        yield put(setUserStates({
+            isLoading: true,
+            message: '',
+            success: false
+        }));
+        // @ts-ignore
+        const data = JSON.parse(localStorage.getItem('user_agent'))
+        if (data.auth) {
+            yield put(setUserData(data));
+        } else {
+            // @ts-ignore
+            yield put(setUserData(''));
+        }
+
+        yield put(setUserStates({
+            isLoading: false,
+            message: data.message,
+            success: data.success
+        }));
     } catch (e) {
+        toast.error('Network error')
         console.warn(e);
-        yield put(onUserLoading('loading....', false));
+        yield put(setUserStates({
+            isLoading: false,
+            message: `client side error ${e}`,
+            success: false
+        }));
     }
 }
 
-
-// updating users
-function* updatingUser(action: any): SagaIterator {
+// user billing address
+function* updatingUserBillingAddress(action: userAction): SagaIterator {
     const { payload } = action;
     try {
-        yield put(onUserLoading('loading....', true));
-        const res = yield call(updateUser, payload.id);
-        yield put(onUserLoading('loading....', false));
-        console.log(res)
+        yield put(setUserStates({
+            isLoading: true,
+            message: '',
+            success: false
+        }));
+        const res = yield call(billingDetailsServices, payload);
+        if (res.success) {
+            yield put(setUserData(res.data));
+            toast.success(res.message);
+        }else toast.error(res.message)
+        yield put(setUserStates({
+            isLoading: false,
+            message: res.message,
+            success: res.success
+        }));
     } catch (e) {
+        toast.error('Network error')
         console.warn(e);
-        yield put(onUserLoading('loading....', false));
+        yield put(setUserStates({
+            isLoading: false,
+            message: `client side error ${e}`,
+            success: false
+        }));
     }
 }
 
 // exporting all sagas
 const USER_SAGAS = [
-    takeLatest(Types.GET_ALL_USERS, fetchingAllUsers),
-    takeLatest(Types.GET_USER, fetchingUser),
-    takeLatest(Types.UPDATE_USER, updatingUser),
-    takeLatest(Types.DELETE_USER, deletingUser),
+    takeLatest(Types.USER_LOGIN, loggingUser),
+    takeLatest(Types.GET_USER_CREDENTIALS, gettingUserCredentials),
+    takeLatest(Types.USER_REGISTRATION, registrationUser),
+    takeLatest(Types.BILLING_DETAILS, updatingUserBillingAddress),
 ];
 export default USER_SAGAS;

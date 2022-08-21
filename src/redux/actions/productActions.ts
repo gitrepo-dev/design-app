@@ -30,12 +30,24 @@ export const onGetProductCustomizeProps = () => ({
  * @param {'type, payload: {Object}'}
  * 
 ***/
-export const onProductPurchase = (data: productData) => ({
-    type: Types.PURCHASE_PRODUCT,
-    payload: {
-        ...data
+
+interface BllingData {
+    address: string;
+    card_number: string;
+    cvc: string;
+    phone: string;
+}
+export const onProductPurchase = (data: { 
+    product: productData,
+    billingAddress: BllingData
+}) => {
+    return {
+        type: Types.PURCHASE_PRODUCT,
+        payload: {
+            ...data
+        }
     }
-});
+};
 
 
 /***
@@ -57,5 +69,16 @@ export const onProductPurchasedHistory = () => ({
 ***/
 export const onCheckout = (data: productData[]) => ({
     type: Types.CHECKOUT_PRODUCT,
+    payload: data
+});
+
+
+/***
+ * clear purchase history
+ * @param {'[object]'}
+ * 
+***/
+export const onClearHistory = (data: productData[]) => ({
+    type: Types.CLEAR_PURCHANGE_HISTORY,
     payload: data
 });

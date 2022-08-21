@@ -1,12 +1,20 @@
+//  all user services
 
 /**
- * get all users
- * @param {''}
- * @returns {data}
+ * user login
+ * @param {'email, password, uuid'}
+ * @returns {promise}
  */
-export const getAllusers = async (): Promise<object> => {
+export const loginUserServices = async (data: any): Promise<object> => {
     try {
-        const res = await fetch(`${process.env.REACT_APP_USER_API}`);
+        const res = await fetch(`${process.env.REACT_APP_API_ROUTE}/user/login`, {
+            headers: {
+                'x-api-key': `${process.env.REACT_APP_API_KEY}`,
+                'content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
         return await res.json()
     } catch (e) {
         throw e
@@ -15,13 +23,21 @@ export const getAllusers = async (): Promise<object> => {
 
 
 /**
- * get spacific user
- * @param {'id'}
- * @returns {data}
+ * signup user
+ * @param {'email, password, uuid, name'}
+ * @returns {promise}
  */
-export const getUser = async (id: string | number): Promise<object> => {
+export const registrationUserServices = async (data: any): Promise<object> => {
     try {
-        return await fetch(`${process.env.REACT_APP_USER_API}/${id}`);
+        const res = await fetch(`${process.env.REACT_APP_API_ROUTE}/user/registration`, {
+            headers: {
+                'x-api-key': `${process.env.REACT_APP_API_KEY}`,
+                'content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+        return await res.json()
     } catch (e) {
         throw e
     }
@@ -29,27 +45,21 @@ export const getUser = async (id: string | number): Promise<object> => {
 
 
 /**
- * update spacific user
- * @param {'id'}
- * @returns {data}
+ * billing address
+ * @param {'object'}
+ * @returns {promise}
  */
-export const updateUser = async (id: string | number): Promise<object> => {
+export const billingDetailsServices = async (data: any): Promise<object> => {
     try {
-        return await fetch(`${process.env.REACT_APP_USER_API}/${id}`);
-    } catch (e) {
-        throw e
-    }
-};
-
-
-/**
- * delete spacific user
- * @param {'id'}
- * @returns {data}
- */
-export const deleteUser = async (id: string | number): Promise<object> => {
-    try {
-        return await fetch(`${process.env.REACT_APP_USER_API}/${id}`);
+        const res = await fetch(`${process.env.REACT_APP_API_ROUTE}/user/billing/details`, {
+            headers: {
+                'x-api-key': `${process.env.REACT_APP_API_KEY}`,
+                'content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+        return await res.json()
     } catch (e) {
         throw e
     }

@@ -1,6 +1,7 @@
 // libs 
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
+import toast from 'modules/toast';
 // types
 import Types from 'redux/types/cartTypes';
 import {
@@ -28,13 +29,16 @@ function* fetchingCartData(): SagaIterator {
             success: false
         }));
         const data = yield call(getCartDataService);
-        yield put(setCartData(data));
+        if (data.success) {
+            yield put(setCartData(data));
+        }
         yield put(setCartStates({
             isLoading: false,
             message: data.message,
             success: data.success
         }));
     } catch (e) {
+        toast.error('Network error')
         console.warn(e);
         yield put(setCartStates({
             isLoading: false,
@@ -61,13 +65,17 @@ function* addingToCart(action: cartActionType): SagaIterator {
         }));
         const data = yield call(addToCartService, payload);
         yield put(setCartData(data));
-        if (data.success) yield put(onGetCartData());
+        if (data.success) {
+            yield put(onGetCartData());
+            toast.success(data.message)
+        } else toast.error(data.message)
         yield put(setCartStates({
             isLoading: false,
             message: data.message,
             success: data.success
         }));
     } catch (e) {
+        toast.error('Network error')
         console.warn(e);
         yield put(setCartStates({
             isLoading: false,
@@ -95,13 +103,17 @@ function* removingItemFromCart(action: cartActionType): SagaIterator {
         // @ts-ignore
         const data = yield call(removeItemFromCartService, payload.uuid);
         yield put(setCartData(data));
-        if (data.success) yield put(onGetCartData());
+        if (data.success) {
+            yield put(onGetCartData());
+            toast.success(data.message)
+        } else toast.error(data.message)
         yield put(setCartStates({
             isLoading: false,
             message: data.message,
             success: data.success
         }));
     } catch (e) {
+        toast.error('Network error')
         console.warn(e);
         yield put(setCartStates({
             isLoading: false,

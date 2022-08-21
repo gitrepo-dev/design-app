@@ -7,13 +7,17 @@ import { setProductCustomizeProps } from 'redux/reducers/productReducer'
 import { onAddToCart, onGetCartData } from "redux/actions/cartActions";
 import { onProductPurchase } from "redux/actions/productActions";
 import { getCartStates } from "redux/reducers/cartReducer";
+import BillingDetails from "modules/popup/BillingDetails";
 
 const ProductCustomization: React.FC<productcustomizationProps> = ({ foo }) => {
 
   const { isLoading, success } = useSelector(getCartStates)
 
   // initializing
+  // @ts-ignore
+  const billingDetails = JSON.parse(localStorage.getItem('user_agent')).billingDetails
   const dispatch = useDispatch()
+  const [showPopUp, setshowPopUp] = useState(false)
   const [selectInputColor, setSelectInputColor] = useState(true)
   const [customizeProps, setCustomizeProps] = useState({
     uuid: '',
@@ -53,7 +57,7 @@ const ProductCustomization: React.FC<productcustomizationProps> = ({ foo }) => {
   useEffect(() => {
     // pass the props to product page for local use
     dispatch(setProductCustomizeProps(customizeProps))
-  }, [customizeProps])
+  }, [customizeProps, dispatch])
 
 
   // for empty input when successfully added product into cart
@@ -112,7 +116,12 @@ const ProductCustomization: React.FC<productcustomizationProps> = ({ foo }) => {
   // when click print it or add to cart btn 
   const handleProduct = (type: string) => {
     if (type === 'cart') dispatch(onAddToCart(customizeProps))
-    else dispatch(onProductPurchase(customizeProps))
+    else if(billingDetails?.card_number) dispatch(onProductPurchase({
+      product: customizeProps,
+      // @ts-ignore
+      billingDetails,
+    }))
+    else setshowPopUp(true)
   }
 
   return (
@@ -195,6 +204,7 @@ const ProductCustomization: React.FC<productcustomizationProps> = ({ foo }) => {
         <div>
         </div>
       </div>
+      <BillingDetails showPopUp={showPopUp} setshowPopUp={setshowPopUp} />
     </>
   );
 }
