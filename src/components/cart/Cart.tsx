@@ -26,8 +26,8 @@ const Cart: React.FC<cartProps> = ({ foo }) => {
   }, [dispatch])
 
   useEffect(() => {
-    if(cartData && cartData?.length) dispatch(onGetCartData())
-  }, [cartData && cartData?.length])
+    if(cartData?.length) dispatch(onGetCartData())
+  }, [cartData?.length, dispatch])
 
   let totalAmt = 0
   const handleCheckout = () => {
@@ -65,7 +65,7 @@ const Cart: React.FC<cartProps> = ({ foo }) => {
                       <ul className="capitalize">
                         <li className="grid grid-cols-2 lg:grid-cols-4 mb-5">
                           <span className="font-bold lg:col-span-2 lg:col-span-1">Caption: </span>
-                          <span className="lg:col-span-2 text-gray-700 ">{caption}</span></li>
+                          <span className="lg:col-span-2 text-gray-700 ">{caption || 'No caption'}</span></li>
                         <li className="grid grid-cols-2 lg:grid-cols-4 mb-5">
                           <span className="font-bold lg:col-span-2 lg:col-span-1">Alignment: </span>
                           <span className="lg:col-span-2 text-gray-700 flex">
@@ -130,6 +130,10 @@ const Cart: React.FC<cartProps> = ({ foo }) => {
                     <li className="grid sm:grid-cols-2 my-3">
                       <span className="">Address: </span>
                       <span className="text-gray-700 text-sm">{data?.billingDetails?.address}</span>
+                    </li>
+                    <li className="grid sm:grid-cols-2 my-3">
+                      <span className="">Card Number: </span>
+                      <span className="text-gray-700 text-sm">{data?.billingDetails?.card_number && data?.billingDetails?.card_number?.slice(-4)}</span>
                     </li>
                   </>
                 ) : <div className="text-red-600 text-xs my-5 text-center cursor-pointer">Please add billing details. <span className="text-blue-700 text-xs" onClick={() => setshowPopUp(true)}>click here</span></div>}

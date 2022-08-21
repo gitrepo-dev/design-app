@@ -25,7 +25,7 @@ const toastProps = (type: string, message?: string, position?: string, time?: nu
   }
 
   if (!isToast || isToast?.classList?.length === 4) {
-    timeFn(3000)
+    timeFn(2000)
     toastBody(type, message, position, time)
   }
 

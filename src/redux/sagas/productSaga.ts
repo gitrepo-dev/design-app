@@ -75,7 +75,7 @@ function* fatchingProductHistory(): SagaIterator {
         if (data.success) {
             yield put(setProductData(data));
             toast.success(data.message)
-        } else toast.error(data.message)
+        } else toast.info(data.message)
         yield put(setProductStates({
             isLoading: false,
             message: data.message,

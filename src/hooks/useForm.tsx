@@ -15,7 +15,6 @@ export default function useForm(state: any, setState: (params: any) => void) {
   //set errors on handlechange when this state true
   const [isValidEnable, setIsValidEnable] = useState(false);
 
-
   // validate all inputs fields
   const validation = (name: string, value: any) => {
     switch (name) {
@@ -58,13 +57,13 @@ export default function useForm(state: any, setState: (params: any) => void) {
       case 'card_number':
         if (!value) setErrors((prevErr: any) => ({ ...prevErr, card_number: 'This field is required.' }))
         else if (!numberRegx.test(String(value).toLowerCase())) setErrors((prevErr: any) => ({ ...prevErr, card_number: 'Only digits allowed.' }))
-        else if (value.length !== 12 || value.length > 12) setErrors((prevErr: any) => ({ ...prevErr, card_number: 'Must be 12 digis card number.' }))
+        else if (value.length < 12 || value.length > 12) setErrors((prevErr: any) => ({ ...prevErr, card_number: 'Must be 12 digis card number.' }))
         else setErrors((prevErr: any) => ({ ...prevErr, card_number: '' }))
         break;
       case 'cvc':
         if (!value) setErrors((prevErr: any) => ({ ...prevErr, cvc: 'This field is required.' }))
         else if (!numberRegx.test(String(value).toLowerCase())) setErrors((prevErr: any) => ({ ...prevErr, cvc: 'Only digits allowed.' }))
-        else if (value.length !== 3 || value.length > 3) setErrors((prevErr: any) => ({ ...prevErr, cvc: 'Must 3 digit cvc number.' }))
+        else if (value.length < 3 || value.length > 3) setErrors((prevErr: any) => ({ ...prevErr, cvc: 'Must 3 digit cvc number.' }))
         else setErrors((prevErr: any) => ({ ...prevErr, cvc: '' }))
         break;
       default:
@@ -72,12 +71,15 @@ export default function useForm(state: any, setState: (params: any) => void) {
     }
   }
 
+
   // this fn will execute on each key pess in inputs of form
   const handleChange = (event: { persist: () => void; target: { name: string; value: any; }; }) => {
     event.persist();
     const { name, value } = event.target
-    // this "inputChangeErrors" will be true if got errors previously after that execute on each key pess in inputs 
-    if (inputChangeErrors) validation(name, value)
+    // this "inputChangeErrors" will be true if got errors previously after that execute on each key pess in inputs
+    // preview code
+    // if (inputChangeErrors) validation(name, value)
+    validation(name, value)
     setValues({ ...values, [name]: value })
     setState({ ...values, [name]: value })
   }
@@ -91,9 +93,16 @@ export default function useForm(state: any, setState: (params: any) => void) {
     // check if each object key has same value ("") and return true/false
     const isError = Object.values(errors).some((err: any) => err !== '')
     const isValue = Object.values(values).some((v: any) => v === '')
-    if (isValue || isError) { setInputChangeErrors(true); setIsValidEnable(false); return false }
-    setIsValidEnable(true)
-    return true
+
+    if (isValue || isError) {
+      setInputChangeErrors(true);
+      setIsValidEnable(false);
+      return false
+    }
+    else {
+      setIsValidEnable(true)
+      return true
+    }
   }
 
   return {
