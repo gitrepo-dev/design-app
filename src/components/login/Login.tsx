@@ -22,15 +22,16 @@ const Login: React.FC = () => {
     if (userCredentials?.data?.auth) navigate('/home')
   }, [navigate, userCredentials?.data?.auth])
 
-  const { handleChange, errors, isValidForm, initialState, isEdit } = useForm(inputState)
+  
+  const { setFormState, formErrors, isFormValid, formState, isFormDirty } = useForm(inputState)
 
   // submit form
   const handleLogin = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    if (isValidForm()) {
+    if (isFormValid()) {
       dispatch(onLoginUser({
-        email: initialState.login_email,
-        password: initialState.login_password
+        email: formState.login_email,
+        password: formState.login_password
       }))
     }
   }
@@ -46,14 +47,14 @@ const Login: React.FC = () => {
           </div>
           <form onSubmit={handleLogin} className="w-100 p-5 md:p-10 shadow-sm bg-white">
             <label htmlFor="email" className="sr-only">Email</label>
-            <input type="email" name="login_email" placeholder="Email*" onChange={handleChange} className="w-full focus:outline-0 px-4 py-2 rounded mt-10 border-slate-200 border-2" />
-            <span className="text-red-700 h-0.5 block text-xs">{errors.login_email}</span>
+            <input type="email" name="login_email" placeholder="Email*" onChange={setFormState} className="w-full focus:outline-0 px-4 py-2 rounded mt-10 border-slate-200 border-2" />
+            <span className="text-red-700 h-0.5 block text-xs">{formErrors.login_email}</span>
             <br></br>
             <label htmlFor="password" className="sr-only">Password</label>
-            <input type="password" name="login_password" placeholder="Password*" onChange={handleChange} className="w-full focus:outline-0 px-4 py-2 rounded border-slate-200 border-2" />
-            <span className="text-red-700 h-0.5 block text-xs">{errors.login_password}</span>
+            <input type="password" name="login_password" placeholder="Password*" onChange={setFormState} className="w-full focus:outline-0 px-4 py-2 rounded border-slate-200 border-2" />
+            <span className="text-red-700 h-0.5 block text-xs">{formErrors.login_password}</span>
             <br></br>
-            <button type="submit" className={`${isEdit ? 'bg-indigo-500 hover:bg-indigo-800' : 'bg-gray-500 cursor-no-drop'} 'px-8 py-2 text-center text-white  rounded  w-full duration-100`}>Sign in</button>
+            <button disabled={!isFormDirty} type="submit" className={`${isFormDirty ? 'bg-indigo-500 hover:bg-indigo-800' : 'bg-gray-500 cursor-no-drop'} 'px-8 py-2 text-center text-white  rounded  w-full duration-100`}>Sign in</button>
             <p className="text-sm mt-5 text-center">Create an account <Link to="/signup" className="text-blue-700">Sign up</Link></p>
           </form>
         </div>
