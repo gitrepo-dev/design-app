@@ -68,7 +68,7 @@ const PurchasedOrder = ({ productData, defaultStates: { isLoading, message } }: 
               {!productData?.length && <div className="p-10">No purchase history found.</div>}
             </div>
           </div>
-          <div className="">
+          {/* <div className="">
             {productData?.length && (<div className="bg-white p-5 rounded-md">
               <p className="text-xs text-red-700">Want to delete all purchase history</p>
               <p className="text-xs text-red-700 mb-5">You will not be able to recover it?</p>
@@ -76,7 +76,7 @@ const PurchasedOrder = ({ productData, defaultStates: { isLoading, message } }: 
                 Clear History
               </button>
             </div>)}
-          </div>
+          </div> */}
         </div>
       </div>
     </>
