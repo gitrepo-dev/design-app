@@ -97,7 +97,7 @@ const Cart: React.FC<cartProps> = ({ foo }) => {
                   </div>
                 </div>
               ))}
-              {(cartData?.length === 0 || cartData === undefined) && <div className="p-10">{message}</div>}
+              {(cartData?.length === 0 || cartData === undefined) && <div className="p-10">No product found.</div>}
             </div>
           </div>
           <div className="">

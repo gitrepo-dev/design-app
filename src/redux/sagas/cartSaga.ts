@@ -22,6 +22,7 @@ import { onGetCartData } from 'redux/actions/cartActions';
 ***/
 
 function* fetchingCartData(): SagaIterator {
+
     try {
         yield put(setCartStates({
             isLoading: true,
@@ -102,9 +103,8 @@ function* removingItemFromCart(action: cartActionType): SagaIterator {
         }));
         // @ts-ignore
         const data = yield call(removeItemFromCartService, payload.uuid);
-        yield put(setCartData(data));
         if (data.success) {
-            yield put(onGetCartData());
+            yield put(setCartData(data));
             toast.success(data.message)
         } else toast.error(data.message)
         yield put(setCartStates({
